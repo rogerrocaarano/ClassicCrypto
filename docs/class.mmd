@@ -1,0 +1,26 @@
+classDiagram
+    direction TB
+    class ICipher {
+        <<interface>>
+        +encrypt(plainText: String, keyParameter: Any [0..1]): String
+        +decrypt(encryptedText: String, keyParameter: Any [0..1]): String
+    }
+    ICipher <|-- BaseCipher
+
+    class Alphabet {
+        -alphabet: String
+        +Alphabet(alphabet: String)
+        +validateText(text: String): Boolean
+        +frequencyAnalysis(text: String): Map~Char, Int~
+    }
+
+    class BaseCipher {
+        <<abstract>>
+        #alphabet~readonly~: Alphabet
+        #ignoreCase~readonly~: Boolean
+        #ignoreEspecialChars~readonly~: Boolean
+        #BaseCipher(alphabet: Alphabet, ignoreCase: Boolean, ignoreEspecialChars: Boolean)
+        #prepareText(text: String): String
+    }
+    BaseCipher ..> Alphabet
+    BaseCipher <|-- CipherImpl
