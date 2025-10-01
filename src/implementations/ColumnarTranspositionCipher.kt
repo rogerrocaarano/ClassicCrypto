@@ -18,18 +18,11 @@ class ColumnarTranspositionCipher(alphabet: Alphabet, ignoreCase: Boolean = true
      * @return Texto cifrado.
      */
     override fun encrypt(plainText: String, keyParameter: Any?): String {
-       if (keyParameter !is ColumnarTranspositionCipherKeyParameters) {
-            throw IllegalArgumentException("keyParameter debe ser de tipo ColumnarTranspositionCipherKeyParameters")
-       }
-
-        val preparedText = prepareText(plainText)
-        val textLength = preparedText.length
-        val rowSize = calculateMatrixRowsSize(textLength, keyParameter.columnSize)
-        val matrix = Array(rowSize) { CharArray(keyParameter.columnSize) { keyParameter.fillChar } }
-        fillMatrix(matrix, preparedText, keyParameter.fillChar)
-
-        val transposedMatrix = transposeMatrix(matrix)
-        return matrixToString(transposedMatrix)
+        require(keyParameter is ColumnarTranspositionCipherKeyParameters)
+        val prepared = prepareText(plainText)
+        val rows = calculateMatrixRowsSize(prepared.length, keyParameter.columnSize)
+        val matrix = buildMatrixFromText(prepared, rows, keyParameter.columnSize, keyParameter.fillChar)
+        return matrixToLinearText(matrix)
     }
 
     /**
@@ -39,22 +32,12 @@ class ColumnarTranspositionCipher(alphabet: Alphabet, ignoreCase: Boolean = true
      * @return Texto descifrado.
      */
     override fun decrypt(encryptedText: String, keyParameter: Any?): String {
-        if (keyParameter !is ColumnarTranspositionCipherKeyParameters) {
-            throw IllegalArgumentException("keyParameter debe ser de tipo ColumnarTranspositionCipherKeyParameters")
-        }
-
-        if (!encryptedTextHasValidLength(encryptedText, keyParameter.columnSize)) {
-            throw IllegalArgumentException("La longitud del texto cifrado no es válida para el tamaño de columna proporcionado.")
-        }
-
-        val rowSize = keyParameter.columnSize
-        val colSize = encryptedText.length / rowSize
-        val matrix = Array(rowSize) { CharArray(colSize) { keyParameter.fillChar } }
-        fillMatrix(matrix, encryptedText, keyParameter.fillChar)
-
-        val transposedMatrix = transposeMatrix(matrix)
-        val decryptedText = matrixToString(transposedMatrix)
-        return removeFillChars(decryptedText, keyParameter.fillChar)
+        require(keyParameter is ColumnarTranspositionCipherKeyParameters)
+        val rows = keyParameter.columnSize
+        require(encryptedText.length % rows == 0)
+        val cols = encryptedText.length / rows
+        val matrix = buildMatrixFromText(encryptedText, rows, cols, keyParameter.fillChar)
+        return removeFillChars(matrixToLinearText(matrix), keyParameter.fillChar)
     }
 
     private fun calculateMatrixRowsSize(textLength: Int, keyLength: Int): Int {
@@ -102,7 +85,19 @@ class ColumnarTranspositionCipher(alphabet: Alphabet, ignoreCase: Boolean = true
         return text.replace(fillChar.toString(), "")
     }
 
-    private fun encryptedTextHasValidLength(encryptedText: String, colSize: Int): Boolean {
-        return encryptedText.length % colSize == 0
+    private fun buildMatrixFromText(
+        text: String,
+        rows: Int,
+        cols: Int,
+        fillChar: Char
+    ): Array<CharArray> {
+        val matrix = Array(rows) { CharArray(cols) { fillChar } }
+        fillMatrix(matrix, text, fillChar)
+        return matrix
     }
+
+    private fun matrixToLinearText(matrix: Array<CharArray>): String {
+        return matrixToString(transposeMatrix(matrix))
+    }
+
 }
