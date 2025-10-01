@@ -3,6 +3,10 @@ package implementations
 import abstractions.Alphabet
 import abstractions.BaseCipher
 import implementations.keyparameters.ColumnarTranspositionCipherKeyParameters
+import utils.calculateRequiredRows
+import utils.stringToMatrix
+import utils.matrixToString
+import utils.transposeMatrix
 
 /**
  * Implementación del cifrado de transposición columnar.
@@ -20,9 +24,9 @@ class ColumnarTranspositionCipher(alphabet: Alphabet, ignoreCase: Boolean = true
     override fun encrypt(plainText: String, keyParameter: Any?): String {
         require(keyParameter is ColumnarTranspositionCipherKeyParameters)
         val prepared = prepareText(plainText)
-        val rows = calculateMatrixRowsSize(prepared.length, keyParameter.columnSize)
-        val matrix = buildMatrixFromText(prepared, rows, keyParameter.columnSize, keyParameter.fillChar)
-        return matrixToLinearText(matrix)
+        val rows = calculateRequiredRows(prepared.length, keyParameter.columnSize)
+        val matrix = stringToMatrix(prepared, rows, keyParameter.columnSize, keyParameter.fillChar)
+        return matrixToString(transposeMatrix(matrix))
     }
 
     /**
@@ -36,68 +40,8 @@ class ColumnarTranspositionCipher(alphabet: Alphabet, ignoreCase: Boolean = true
         val rows = keyParameter.columnSize
         require(encryptedText.length % rows == 0)
         val cols = encryptedText.length / rows
-        val matrix = buildMatrixFromText(encryptedText, rows, cols, keyParameter.fillChar)
-        return removeFillChars(matrixToLinearText(matrix), keyParameter.fillChar)
+        val matrix = stringToMatrix(encryptedText, rows, cols, keyParameter.fillChar)
+        val txt = matrixToString(transposeMatrix(matrix))
+        return txt.replace(keyParameter.fillChar.toString(), "")
     }
-
-    private fun calculateMatrixRowsSize(textLength: Int, keyLength: Int): Int {
-        return (textLength + keyLength - 1) / keyLength // Redondeo hacia arriba
-    }
-
-    private fun fillMatrix(matrix: Array<CharArray>, text: String, fillChar: Char) {
-        var index = 0
-        for (i in matrix.indices) {
-            for (j in matrix[i].indices) {
-                if (index < text.length) {
-                    matrix[i][j] = text[index]
-                    index++
-                } else {
-                    matrix[i][j] = fillChar
-                }
-            }
-        }
-    }
-
-    private fun transposeMatrix(matrix: Array<CharArray>): Array<CharArray> {
-        val rowSize = matrix.size
-        val columnSize = matrix[0].size
-        val transposed = Array(columnSize) { CharArray(rowSize) }
-        for (i in matrix.indices) {
-            for (j in matrix[i].indices) {
-                transposed[j][i] = matrix[i][j]
-            }
-        }
-
-        return transposed
-    }
-
-    private fun matrixToString(matrix: Array<CharArray>): String {
-        val stringBuilder = StringBuilder()
-        for (i in matrix.indices) {
-            for (j in matrix[i].indices) {
-                stringBuilder.append(matrix[i][j])
-            }
-        }
-        return stringBuilder.toString()
-    }
-
-    private fun removeFillChars(text: String, fillChar: Char): String {
-        return text.replace(fillChar.toString(), "")
-    }
-
-    private fun buildMatrixFromText(
-        text: String,
-        rows: Int,
-        cols: Int,
-        fillChar: Char
-    ): Array<CharArray> {
-        val matrix = Array(rows) { CharArray(cols) { fillChar } }
-        fillMatrix(matrix, text, fillChar)
-        return matrix
-    }
-
-    private fun matrixToLinearText(matrix: Array<CharArray>): String {
-        return matrixToString(transposeMatrix(matrix))
-    }
-
 }
