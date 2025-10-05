@@ -1,4 +1,4 @@
-package implementations.alphabets
+package lib.alphabets
 
 const val LATIN_CHARS_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const val LATIN_CHARS_LOWER = "abcdefghijklmnopqrstuvwxyz"

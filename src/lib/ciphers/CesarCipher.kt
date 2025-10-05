@@ -1,9 +1,10 @@
-package implementations
+package lib.ciphers
 
-import abstractions.Alphabet
-import abstractions.BaseCipher
-import implementations.alphabets.*
-import implementations.keyparameters.CesarKey
+import lib.abstractions.Alphabet
+import lib.abstractions.BaseCipher
+import lib.alphabets.*
+import lib.ciphers.keyparameters.CesarKey
+import kotlin.text.iterator
 
 class CesarCipher(
     alphabet: Alphabet,

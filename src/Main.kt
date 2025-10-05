@@ -1,8 +1,8 @@
-import abstractions.Alphabet
-import implementations.ColumnarTranspositionCipher
-import implementations.keyparameters.ColumnarTranspositionCipherKeyParameters
-import implementations.alphabets.LATIN_CHARS
-import implementations.alphabets.WHITE_SPACE
+import lib.abstractions.Alphabet
+import lib.ciphers.ColumnarTranspositionCipher
+import lib.ciphers.keyparameters.ColumnarTranspositionCipherKeyParameters
+import lib.alphabets.LATIN_CHARS
+import lib.alphabets.WHITE_SPACE
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.

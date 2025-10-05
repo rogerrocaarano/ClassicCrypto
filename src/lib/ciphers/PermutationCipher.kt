@@ -1,11 +1,11 @@
-package implementations
+package lib.ciphers
 
-import abstractions.Alphabet
-import abstractions.BaseCipher
-import implementations.keyparameters.PermutationCipherKeyParameter
-import utils.calculateRequiredRows
-import utils.matrixToString
-import utils.stringToMatrix
+import lib.abstractions.Alphabet
+import lib.abstractions.BaseCipher
+import lib.ciphers.keyparameters.PermutationCipherKeyParameter
+import lib.utils.calculateRequiredRows
+import lib.utils.matrixToString
+import lib.utils.stringToMatrix
 
 /**
  * Implementación del cifrado de permutación.

@@ -1,4 +1,4 @@
-package abstractions
+package lib.abstractions
 
 /**
  * Interfaz para cifrados clásicos.

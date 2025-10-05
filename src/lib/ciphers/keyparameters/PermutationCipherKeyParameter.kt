@@ -1,6 +1,7 @@
-package implementations.keyparameters
+package lib.ciphers.keyparameters
 
-import abstractions.Alphabet
+import lib.abstractions.Alphabet
+import kotlin.text.iterator
 
 data class PermutationCipherKeyParameter(
     val keyPhrase: String,

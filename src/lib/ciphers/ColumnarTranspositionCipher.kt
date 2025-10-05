@@ -1,12 +1,12 @@
-package implementations
+package lib.ciphers
 
-import abstractions.Alphabet
-import abstractions.BaseCipher
-import implementations.keyparameters.ColumnarTranspositionCipherKeyParameters
-import utils.calculateRequiredRows
-import utils.stringToMatrix
-import utils.matrixToString
-import utils.transposeMatrix
+import lib.abstractions.Alphabet
+import lib.abstractions.BaseCipher
+import lib.ciphers.keyparameters.ColumnarTranspositionCipherKeyParameters
+import lib.utils.calculateRequiredRows
+import lib.utils.stringToMatrix
+import lib.utils.matrixToString
+import lib.utils.transposeMatrix
 
 /**
  * Implementación del cifrado de transposición columnar.

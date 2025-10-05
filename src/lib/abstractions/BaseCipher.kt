@@ -1,4 +1,4 @@
-package abstractions
+package lib.abstractions
 
 /**
  * Clase abstracta base para cifrados clásicos.

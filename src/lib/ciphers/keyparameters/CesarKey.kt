@@ -1,5 +1,4 @@
-
-package implementations.keyparameters
+package lib.ciphers.keyparameters
 
 /**
  * Parámetro de clave para el cifrado César

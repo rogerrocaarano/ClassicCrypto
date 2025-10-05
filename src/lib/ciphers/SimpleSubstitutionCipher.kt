@@ -1,8 +1,10 @@
-package implementations
+package lib.ciphers
 
-import abstractions.Alphabet
-import abstractions.BaseCipher
-import implementations.keyparameters.SimpleSubstitutionKey
+import lib.alphabets.LATIN_CHARS_UPPER
+import lib.abstractions.Alphabet
+import lib.abstractions.BaseCipher
+import lib.ciphers.keyparameters.SimpleSubstitutionKey
+import kotlin.text.iterator
 
 /**
  * Implementación del cifrado de sustitución simple.
@@ -80,7 +82,7 @@ class SimpleSubstitutionCipher(
     private fun getWorkingAlphabet(): String {
         // Para Simple Substitution, usamos el alfabeto básico
         // Podrías personalizar esto según tus necesidades
-        return implementations.alphabets.LATIN_CHARS_UPPER
+        return LATIN_CHARS_UPPER
     }
 
     /**

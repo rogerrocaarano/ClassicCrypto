@@ -1,4 +1,4 @@
-package implementations.alphabets
+package lib.alphabets
 
 const val WHITE_SPACE = " \n\t\r"
 const val SPECIAL_CHARS = "!\"#\$%&'()*+,-./:;<=>?@[\\]^_`{|}~"

@@ -1,4 +1,4 @@
-package utils
+package lib.utils
 
 fun fillMatrix(matrix: Array<CharArray>, text: String, fillChar: Char, colsOrder: List<Int>? = null) {
     var index = 0

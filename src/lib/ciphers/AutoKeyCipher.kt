@@ -1,7 +1,7 @@
-package implementations
+package lib.ciphers
 
-import abstractions.Alphabet
-import abstractions.BaseCipher
+import lib.abstractions.Alphabet
+import lib.abstractions.BaseCipher
 
 /**
  * Implementación del cifrado de clave automática (Autokey).

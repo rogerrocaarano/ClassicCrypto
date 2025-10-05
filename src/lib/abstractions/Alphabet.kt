@@ -1,4 +1,4 @@
-package abstractions
+package lib.abstractions
 
 /**
  * Representa un alfabeto y operaciones relacionadas.
