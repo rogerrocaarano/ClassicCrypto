@@ -2,6 +2,10 @@ package implementations
 
 import abstractions.Alphabet
 import abstractions.BaseCipher
+import implementations.keyparameters.PermutationCipherKeyParameter
+import utils.calculateRequiredRows
+import utils.matrixToString
+import utils.stringToMatrix
 
 /**
  * Implementación del cifrado de permutación.
@@ -18,7 +22,13 @@ class PermutationCipher(alphabet: Alphabet, ignoreCase: Boolean = true, ignoreEs
      * @return Texto cifrado.
      */
     override fun encrypt(plainText: String, keyParameter: Any?): String {
-        TODO("Not yet implemented")
+        require(keyParameter is PermutationCipherKeyParameter)
+        val cleanText = prepareText(plainText)
+        val perm = keyParameter.permutation()
+        val rows = calculateRequiredRows(cleanText.length, perm.size)
+        val matrix = stringToMatrix(cleanText, rows, perm.size, keyParameter.fillChar)
+
+        return matrixToString(matrix, perm)
     }
 
     /**
@@ -28,6 +38,13 @@ class PermutationCipher(alphabet: Alphabet, ignoreCase: Boolean = true, ignoreEs
      * @return Texto descifrado.
      */
     override fun decrypt(encryptedText: String, keyParameter: Any?): String {
-        TODO("Not yet implemented")
+        require(keyParameter is PermutationCipherKeyParameter)
+        val perm = keyParameter.permutation()
+        val cols = perm.size
+        require(encryptedText.length % cols == 0)
+        val rows = encryptedText.length / cols
+        val matrix = stringToMatrix(encryptedText, rows, cols, keyParameter.fillChar, perm)
+        val txt = matrixToString(matrix)
+        return txt.replace(keyParameter.fillChar.toString(), "")
     }
 }
