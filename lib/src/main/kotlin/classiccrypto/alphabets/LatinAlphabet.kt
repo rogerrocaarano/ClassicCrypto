@@ -1,0 +1,7 @@
+package classiccrypto.alphabets
+
+const val LATIN_CHARS_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const val LATIN_CHARS_LOWER = "abcdefghijklmnopqrstuvwxyz"
+const val LATIN_CHARS_SPECIAL_UPPER = "ÁÉÍÓÚÜÑ"
+const val LATIN_CHARS_SPECIAL_LOWER = "áéíóúüñ"
+const val LATIN_CHARS = LATIN_CHARS_UPPER + LATIN_CHARS_LOWER + LATIN_CHARS_SPECIAL_UPPER + LATIN_CHARS_SPECIAL_LOWER
