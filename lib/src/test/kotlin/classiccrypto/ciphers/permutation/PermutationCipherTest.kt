@@ -3,59 +3,64 @@ package classiccrypto.ciphers.permutation
 import classiccrypto.abstractions.Alphabet
 import classiccrypto.alphabets.LATIN_CHARS_UPPER
 import classiccrypto.alphabets.WHITE_SPACE
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
+import kotlin.test.assertEquals
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PermutationCipherTest {
-    companion object {
-        @JvmStatic
-        fun provideTestData(): Stream<Array<Any>> = Stream.of(
-            arrayOf("ABC", "Lorem ipsum", '='),
-            arrayOf("KEY", "HELLO WORLD", '*'),
-            arrayOf("QWERTY", "TEST STRING", '#')
-        )
 
-        @JvmStatic
-        fun provideEncryptionDecryptionTestData(): Stream<Array<Any>> = Stream.of(
-            arrayOf("BCA", "ABCDEFGHIJ", "=", "CABFDEIGH=J="),
-            arrayOf("CAB", "ABCDEFGHIJ", "=", "BCAEFDHIG==J"),
-            arrayOf("BDDA", "ABCDEFGHIJ", "=", "DABCHEFG=IJ=")
-        )
-    }
+    private val alphabet = Alphabet(LATIN_CHARS_UPPER + WHITE_SPACE)
+    private val keyAlphabet = Alphabet(LATIN_CHARS_UPPER)
+    private val cipher = PermutationCipher(alphabet)
 
-    @ParameterizedTest
-    @MethodSource("provideTestData")
-    fun encryptOutputLengthShouldBeMoreOrEqualsInputText(keyPhrase: String, plainText: String, fillChar: Char) {
-        val alphabet = Alphabet(LATIN_CHARS_UPPER + WHITE_SPACE)
-        val keyAlphabet = Alphabet(LATIN_CHARS_UPPER)
-        val cipher = PermutationCipher(alphabet)
+    // --- Data Providers ---
+    fun encryptionCases(): Stream<Arguments> = Stream.of(
+        Arguments.of("BCA", "ABCDEFGHIJ", '=', "CABFDEIGH=J="),
+        Arguments.of("CAB", "ABCDEFGHIJ", '=', "BCAEFDHIG==J"),
+        Arguments.of("BDDA", "ABCDEFGHIJ", '=', "DABCHEFG=IJ=")
+    )
+
+    fun basicCases(): Stream<Arguments> = Stream.of(
+        Arguments.of("ABC", "Lorem ipsum", '='),
+        Arguments.of("KEY", "HELLO WORLD", '*'),
+        Arguments.of("QWERTY", "TEST STRING", '#')
+    )
+
+    // --- Tests ---
+    @ParameterizedTest(name = "Encrypted output length ≥ input length with key={0}")
+    @MethodSource("basicCases")
+    fun `encrypt output should be at least as long as input`(keyPhrase: String, plainText: String, fillChar: Char) {
         val key = PermutationCipherKeyParameter(keyPhrase, keyAlphabet, fillChar)
-
-        val encryptedText = cipher.encrypt(plainText, key)
-        assertTrue(encryptedText.length >= plainText.length)
+        val result = cipher.encrypt(plainText, key)
+        assertTrue(result.length >= plainText.length)
     }
 
-    @ParameterizedTest
-    @MethodSource("provideEncryptionDecryptionTestData")
-    fun encryptShouldReturnExpectedResult(keyPhrase: String, plainText: String, fillChar: String, expectedEncryptedText: String) {
-        val alphabet = Alphabet(LATIN_CHARS_UPPER + WHITE_SPACE)
-        val keyAlphabet = Alphabet(LATIN_CHARS_UPPER)
-        val cipher = PermutationCipher(alphabet)
-        val key = PermutationCipherKeyParameter(keyPhrase, keyAlphabet, fillChar[0])
-        val encryptedText = cipher.encrypt(plainText, key)
-        assertEquals(expectedEncryptedText, encryptedText)
+    @ParameterizedTest(name = "Encryption with key={0} should produce expected output")
+    @MethodSource("encryptionCases")
+    fun `encrypt should match expected output`(
+        keyPhrase: String,
+        plainText: String,
+        fillChar: Char,
+        expected: String
+    ) {
+        val key = PermutationCipherKeyParameter(keyPhrase, keyAlphabet, fillChar)
+        assertEquals(expected, cipher.encrypt(plainText, key))
     }
 
-    @ParameterizedTest
-    @MethodSource("provideEncryptionDecryptionTestData")
-    fun decryptShouldReturnOriginalText(keyPhrase: String, originalText: String, fillChar: String, encryptedText: String) {
-        val alphabet = Alphabet(LATIN_CHARS_UPPER + WHITE_SPACE)
-        val keyAlphabet = Alphabet(LATIN_CHARS_UPPER)
-        val cipher = PermutationCipher(alphabet)
-        val key = PermutationCipherKeyParameter(keyPhrase, keyAlphabet, fillChar[0])
-        val decryptedText = cipher.decrypt(encryptedText, key)
-        assertEquals(originalText, decryptedText)
+    @ParameterizedTest(name = "Decryption with key={0} should restore original text")
+    @MethodSource("encryptionCases")
+    fun `decrypt should restore original text`(
+        keyPhrase: String,
+        originalText: String,
+        fillChar: Char,
+        encrypted: String
+    ) {
+        val key = PermutationCipherKeyParameter(keyPhrase, keyAlphabet, fillChar)
+        assertEquals(originalText, cipher.decrypt(encrypted, key))
     }
 }
