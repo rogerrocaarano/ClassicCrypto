@@ -33,4 +33,19 @@ class Alphabet(private val alphabet: String) {
     fun filterText(text: String): String {
         return text.filter { alphabet.contains(it) }
     }
+
+    /**
+     * Obtiene la longitud del alfabeto.
+     * @return Longitud del alfabeto.
+     */
+    fun length(): Int = alphabet.length
+
+    /**
+     * Obtiene el índice de un carácter en el alfabeto.
+     * @param char Carácter a buscar.
+     * @return Índice del carácter, o -1 si no se encuentra.
+     */
+    fun indexOf(char: Char): Int = alphabet.indexOf(char)
+
+    override fun toString(): String = alphabet
 }
