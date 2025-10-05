@@ -27,7 +27,7 @@ class PermutationCipher(alphabet: Alphabet, ignoreCase: Boolean = true, ignoreEs
         val rows = calculateRequiredRows(cleanText.length, perm.size)
         val matrix = stringToMatrix(cleanText, rows, perm.size, keyParameter.fillChar)
 
-        return matrixToString(matrix, perm)
+        return matrixToString(matrix, getColumnOrder(perm))
     }
 
     /**
@@ -42,8 +42,12 @@ class PermutationCipher(alphabet: Alphabet, ignoreCase: Boolean = true, ignoreEs
         val cols = perm.size
         require(encryptedText.length % cols == 0)
         val rows = encryptedText.length / cols
-        val matrix = stringToMatrix(encryptedText, rows, cols, keyParameter.fillChar, perm)
+        val matrix = stringToMatrix(encryptedText, rows, cols, keyParameter.fillChar, getColumnOrder(perm))
         val txt = matrixToString(matrix)
         return txt.replace(keyParameter.fillChar.toString(), "")
+    }
+
+    private fun getColumnOrder(perm: List<Int>): List<Int> {
+        return perm.withIndex().sortedBy { it.value }.map { it.index }
     }
 }
