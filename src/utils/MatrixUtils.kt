@@ -1,9 +1,10 @@
 package utils
 
-fun fillMatrix(matrix: Array<CharArray>, text: String, fillChar: Char) {
+fun fillMatrix(matrix: Array<CharArray>, text: String, fillChar: Char, colsOrder: List<Int>? = null) {
     var index = 0
     for (i in matrix.indices) {
-        for (j in matrix[i].indices) {
+        val columnIndices = colsOrder ?: matrix[i].indices.toList()
+        for (j in columnIndices) {
             if (index < text.length) {
                 matrix[i][j] = text[index]
                 index++
@@ -27,11 +28,12 @@ fun transposeMatrix(matrix: Array<CharArray>): Array<CharArray> {
     return transposed
 }
 
-fun matrixToString(matrix: Array<CharArray>): String {
+fun matrixToString(matrix: Array<CharArray>, colsOrder: List<Int>? = null): String {
     val stringBuilder = StringBuilder()
-    for (i in matrix.indices) {
-        for (j in matrix[i].indices) {
-            stringBuilder.append(matrix[i][j])
+    for (row in matrix.indices) {
+        val columnIndices = colsOrder ?: matrix[row].indices.toList()
+        for (colIndex in columnIndices) {
+            stringBuilder.append(matrix[row][colIndex])
         }
     }
     return stringBuilder.toString()
@@ -41,10 +43,11 @@ fun stringToMatrix(
     text: String,
     rows: Int,
     cols: Int,
-    fillChar: Char
+    fillChar: Char,
+    colsOrder: List<Int>? = null
 ): Array<CharArray> {
     val matrix = Array(rows) { CharArray(cols) { fillChar } }
-    fillMatrix(matrix, text, fillChar)
+    fillMatrix(matrix, text, fillChar, colsOrder)
     return matrix
 }
 
