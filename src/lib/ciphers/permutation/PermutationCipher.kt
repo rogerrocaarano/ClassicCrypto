@@ -1,8 +1,7 @@
-package lib.ciphers
+package lib.ciphers.permutation
 
 import lib.abstractions.Alphabet
 import lib.abstractions.BaseCipher
-import lib.ciphers.keyparameters.PermutationCipherKeyParameter
 import lib.utils.calculateRequiredRows
 import lib.utils.matrixToString
 import lib.utils.stringToMatrix

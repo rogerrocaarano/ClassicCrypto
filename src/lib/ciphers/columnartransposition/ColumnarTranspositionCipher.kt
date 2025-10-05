@@ -1,11 +1,10 @@
-package lib.ciphers
+package lib.ciphers.columnartransposition
 
 import lib.abstractions.Alphabet
 import lib.abstractions.BaseCipher
-import lib.ciphers.keyparameters.ColumnarTranspositionCipherKeyParameters
 import lib.utils.calculateRequiredRows
-import lib.utils.stringToMatrix
 import lib.utils.matrixToString
+import lib.utils.stringToMatrix
 import lib.utils.transposeMatrix
 
 /**

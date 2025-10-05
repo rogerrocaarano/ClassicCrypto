@@ -1,4 +1,4 @@
-package lib.ciphers.keyparameters
+package lib.ciphers.columnartransposition
 
 data class ColumnarTranspositionCipherKeyParameters(
     val columnSize: Int,

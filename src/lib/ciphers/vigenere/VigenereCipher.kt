@@ -1,20 +1,19 @@
-package lib.ciphers
+package lib.ciphers.vigenere
 
 import lib.abstractions.Alphabet
 import lib.abstractions.BaseCipher
 
 /**
- * Implementación del cifrado Playfair.
- * Un cifrado de sustitución que opera sobre pares de letras (dígrafos)
- * usando una matriz de 5x5 basada en una palabra clave.
+ * Implementación del cifrado de Vigenère.
+ * Un cifrado polialfabético que utiliza una palabra clave repetida.
  */
-class PlayfairCipher(alphabet: Alphabet, ignoreCase: Boolean = true, ignoreEspecialChars: Boolean = true) :
+class VigenereCipher(alphabet: Alphabet, ignoreCase: Boolean = true, ignoreEspecialChars: Boolean = true) :
     BaseCipher(alphabet, ignoreCase, ignoreEspecialChars) {
 
     /**
-     * Cifra el texto usando el cifrado Playfair.
+     * Cifra el texto usando el cifrado de Vigenère.
      * @param plainText Texto a cifrar.
-     * @param keyParameter Palabra clave para generar la matriz Playfair.
+     * @param keyParameter Palabra clave para el cifrado.
      * @return Texto cifrado.
      */
     override fun encrypt(plainText: String, keyParameter: Any?): String {
@@ -22,9 +21,9 @@ class PlayfairCipher(alphabet: Alphabet, ignoreCase: Boolean = true, ignoreEspec
     }
 
     /**
-     * Descifra el texto usando el cifrado Playfair.
+     * Descifra el texto usando el cifrado de Vigenère.
      * @param encryptedText Texto cifrado.
-     * @param keyParameter Palabra clave para generar la matriz Playfair.
+     * @param keyParameter Palabra clave para el descifrado.
      * @return Texto descifrado.
      */
     override fun decrypt(encryptedText: String, keyParameter: Any?): String {

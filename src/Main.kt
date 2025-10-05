@@ -1,6 +1,6 @@
 import lib.abstractions.Alphabet
-import lib.ciphers.ColumnarTranspositionCipher
-import lib.ciphers.keyparameters.ColumnarTranspositionCipherKeyParameters
+import lib.ciphers.columnartransposition.ColumnarTranspositionCipher
+import lib.ciphers.columnartransposition.ColumnarTranspositionCipherKeyParameters
 import lib.alphabets.LATIN_CHARS
 import lib.alphabets.WHITE_SPACE
 

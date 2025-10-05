@@ -1,9 +1,8 @@
-package lib.ciphers
+package lib.ciphers.simplesubstitution
 
-import lib.alphabets.LATIN_CHARS_UPPER
 import lib.abstractions.Alphabet
 import lib.abstractions.BaseCipher
-import lib.ciphers.keyparameters.SimpleSubstitutionKey
+import lib.alphabets.LATIN_CHARS_UPPER
 import kotlin.text.iterator
 
 /**
@@ -25,7 +24,7 @@ class SimpleSubstitutionCipher(
     override fun encrypt(plainText: String, keyParameter: Any?): String {
         val key = SimpleSubstitutionKey.fromParameter(keyParameter, getWorkingAlphabet())
         val processedText = prepareText(plainText)
-        
+
         return buildString {
             for (char in processedText) {
                 when {
@@ -55,7 +54,7 @@ class SimpleSubstitutionCipher(
     override fun decrypt(encryptedText: String, keyParameter: Any?): String {
         val key = SimpleSubstitutionKey.fromParameter(keyParameter, getWorkingAlphabet())
         val processedText = prepareText(encryptedText)
-        
+
         return buildString {
             for (char in processedText) {
                 when {

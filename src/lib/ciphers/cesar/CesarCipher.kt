@@ -1,9 +1,9 @@
-package lib.ciphers
+package lib.ciphers.cesar
 
 import lib.abstractions.Alphabet
 import lib.abstractions.BaseCipher
-import lib.alphabets.*
-import lib.ciphers.keyparameters.CesarKey
+import lib.alphabets.LATIN_CHARS_SPECIAL_UPPER
+import lib.alphabets.LATIN_CHARS_UPPER
 import kotlin.text.iterator
 
 class CesarCipher(
@@ -13,14 +13,14 @@ class CesarCipher(
 ) : BaseCipher(alphabet, ignoreCase, ignoreEspecialChars) {
 
     override fun encrypt(plainText: String, keyParameter: Any?): String {
-        val key = CesarKey.fromParameter(keyParameter)
+        val key = CesarKeyParameters.fromParameter(keyParameter)
         val processedText = prepareText(plainText)
         val workingAlphabet = getWorkingAlphabet()
-        
+
         return buildString {
             for (char in processedText) {
                 val index = workingAlphabet.indexOf(char)
-                
+
                 if (index != -1) {
                     var newIndex = (index + key.shift) % workingAlphabet.length
                     if (newIndex < 0) newIndex += workingAlphabet.length
@@ -33,8 +33,8 @@ class CesarCipher(
     }
 
     override fun decrypt(encryptedText: String, keyParameter: Any?): String {
-        val key = CesarKey.fromParameter(keyParameter)
-        return encrypt(encryptedText, CesarKey(-key.shift))
+        val key = CesarKeyParameters.fromParameter(keyParameter)
+        return encrypt(encryptedText, CesarKeyParameters(-key.shift))
     }
 
     /**
@@ -44,11 +44,11 @@ class CesarCipher(
         // Usa directamente los caracteres del Alphabet proporcionado
         // Para César necesitamos el orden correcto, así que usamos detección
         return when {
-            alphabet.validateText("Ñ") && alphabet.validateText("Á") -> 
+            alphabet.validateText("Ñ") && alphabet.validateText("Á") ->
                 LATIN_CHARS_UPPER + LATIN_CHARS_SPECIAL_UPPER
-            alphabet.validateText("Ñ") -> 
+            alphabet.validateText("Ñ") ->
                 LATIN_CHARS_UPPER + "Ñ"
-            else -> 
+            else ->
                 LATIN_CHARS_UPPER
         }
     }

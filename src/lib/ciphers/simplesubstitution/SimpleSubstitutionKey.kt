@@ -1,4 +1,4 @@
-package lib.ciphers.keyparameters
+package lib.ciphers.simplesubstitution
 
 /**
  * Parámetro de clave para el cifrado de sustitución simple
@@ -57,8 +57,8 @@ class SimpleSubstitutionKey(val substitutionMap: Map<Char, Char>) {
             return when (parameter) {
                 is SimpleSubstitutionKey -> parameter
                 is Map<*, *> -> {
-                    val charMap = parameter.entries.associate { 
-                        (it.key as Char) to (it.value as Char) 
+                    val charMap = parameter.entries.associate {
+                        (it.key as Char) to (it.value as Char)
                     }
                     SimpleSubstitutionKey(charMap)
                 }

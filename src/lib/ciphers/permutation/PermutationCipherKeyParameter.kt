@@ -1,4 +1,4 @@
-package lib.ciphers.keyparameters
+package lib.ciphers.permutation
 
 import lib.abstractions.Alphabet
 import kotlin.text.iterator

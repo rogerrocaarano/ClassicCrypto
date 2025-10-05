@@ -1,4 +1,4 @@
-package lib.ciphers
+package lib.ciphers.railfence
 
 import lib.abstractions.Alphabet
 import lib.abstractions.BaseCipher
