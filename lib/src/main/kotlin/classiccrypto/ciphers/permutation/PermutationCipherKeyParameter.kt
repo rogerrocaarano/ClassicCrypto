@@ -34,6 +34,12 @@ data class PermutationCipherKeyParameter(
         return indexes
     }
 
+    /**
+     * Calcula la permutación de columnas basada en la frase clave y el alfabeto.
+     * El resultado es una lista de índices que representa el orden de las columnas.
+     *
+     * @return Lista de enteros con el orden de permutación de columnas.
+     */
     fun permutation(): List<Int> {
         var temp = keyPhrase
         val perm = MutableList(keyPhrase.length) { -1 }
