@@ -12,13 +12,15 @@ classDiagram
         +Alphabet(alphabet: String)
         +validateText(text: String): Boolean
         +frequencyAnalysis(text: String): Map~Char, Int~
+        +filterText(text: String): String
+        +length(): Int
     }
 
     class BaseCipher {
         <<abstract>>
-        #alphabet~readonly~: Alphabet
-        #ignoreCase~readonly~: Boolean
-        #ignoreEspecialChars~readonly~: Boolean
+        #alphabet: Alphabet
+        #ignoreCase: Boolean
+        #ignoreEspecialChars: Boolean
         #BaseCipher(alphabet: Alphabet, ignoreCase: Boolean, ignoreEspecialChars: Boolean)
         #prepareText(text: String): String
     }
